@@ -14,13 +14,17 @@ function wrapWords(selector) {
 // Selecionar todos os elementos com o custom attribute data-animate="true"
 const animatedElements = document.querySelectorAll('[data-animate="true"]');
 
+// Certifique-se de que encontrou elementos antes de aplicar animações
 if (animatedElements.length > 0) {
   // Envolver as palavras em <span>
   wrapWords('[data-animate="true"]');
 
-  // Animação de blur para palavras de elementos com data-animate="true"
-  gsap.utils.toArray('[data-animate="true"] .word').forEach((element) => {
-    gsap.fromTo(element, 
+  // Animação de blur e fade-in para palavras de elementos com data-animate="true"
+  animatedElements.forEach((element) => {
+    const words = element.querySelectorAll('.word');
+
+    // Animação de blur
+    gsap.fromTo(words, 
       { filter: "blur(10px)", opacity: 0 }, 
       { filter: "blur(0px)", opacity: 1, duration: 1.1, stagger: 0.1, scrollTrigger: {
         trigger: element,
@@ -28,11 +32,9 @@ if (animatedElements.length > 0) {
         toggleActions: "play none none none"
       }}
     );
-  });
 
-  // Animação de fade-in para palavras de elementos com data-animate="true"
-  gsap.utils.toArray('[data-animate="true"] .word').forEach((element) => {
-    gsap.fromTo(element, 
+    // Animação de fade-in
+    gsap.fromTo(words, 
       { opacity: 0, y: 50 }, 
       { opacity: 1, y: 0, duration: 1.1, stagger: 0.1, scrollTrigger: {
         trigger: element,
